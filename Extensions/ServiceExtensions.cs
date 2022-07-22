@@ -6,6 +6,7 @@ using Contracts;
 using Entities;
 using LoggerService;
 using Microsoft.EntityFrameworkCore;
+using Repository;
 
 namespace PuebaNET6.Extensions
 {
@@ -23,11 +24,7 @@ namespace PuebaNET6.Extensions
 			});
 
 
-		public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
-			//services.AddDbContext<RepositoryContext>(opts => opts.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
-			services.AddDbContext<RepositoryContext>(opts => opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("CodeMaze.API")));
-
-
+		
 		public static void ConfigureIISIntegration(this IServiceCollection services)
 		{
 			services.Configure<IISOptions>(options =>
@@ -39,5 +36,12 @@ namespace PuebaNET6.Extensions
 		{
 			services.AddSingleton<ILoggerManager, LoggerManager>();
 		}
+
+		public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
+			//services.AddDbContext<RepositoryContext>(opts => opts.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
+			services.AddDbContext<RepositoryContext>(opts => opts.UseSqlServer(configuration.GetConnectionString("sqlConnection"), b => b.MigrationsAssembly("Entities")));
+
+		public static void ConfigureRepositoryManager(this IServiceCollection services) => services.AddScoped<IRepositoryManager, RepositoryManager>();
 	}
 }
+
