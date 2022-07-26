@@ -1,3 +1,4 @@
+using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 using PuebaNET6.Extensions;
@@ -16,13 +17,15 @@ builder.Services.ConfigureIISIntegration();
 
 builder.Services.ConfigureLoggerService();
 
-builder.Services.ConfigureRepositoryManager();
-
 var configuration = builder.Configuration;
 
 builder.Services.ConfigureSqlContext(configuration);
 
+builder.Services.ConfigureRepositoryManager();
+
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
@@ -39,6 +42,9 @@ else
 {
     app.UseHsts();
 }
+
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureExceptionHandler(logger);
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
