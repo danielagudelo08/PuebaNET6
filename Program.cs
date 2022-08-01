@@ -17,6 +17,10 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     options.SuppressModelStateInvalidFilter = true;
 });
 
+builder.Services.AddAuthentication();
+
+builder.Services.ConfigureIdentity();
+
 builder.Services.ConfigureCors();
 
 builder.Services.ConfigureIISIntegration();
@@ -58,6 +62,10 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.All
 });
+
+
+
+app.UseAuthentication();
 app.UseCors("CorsPolicy");
 app.UseAuthorization();
 app.MapControllers();

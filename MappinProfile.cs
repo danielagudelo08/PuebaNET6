@@ -15,8 +15,8 @@ namespace PuebaNET6
             CreateMap<Employee, EmployeeDto>();
             CreateMap<CompanyForCreationDto, Company>();
             CreateMap<EmployeeForCreationDto, Employee>();
-
             CreateMap<EmployeeForUpdateDto, Employee>();
+            CreateMap<UserForRegistrationDto, User>();
 
         }
     }
